@@ -23,7 +23,7 @@ function getCoordsLng($location){
      return $aCsv->lng;
 }*/
 
-if(isset($_POST["S"]) OR isset($_POST["F"])) {
+if(isset($_POST["S"]) && isset($_POST["F"])) {
     $start = $_POST["S"];
     $finish = $_POST["F"];
 }
@@ -41,17 +41,47 @@ if(isset($_POST["S"]) OR isset($_POST["F"])) {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="./js/metro.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap"></script>
-        <script type="text/javascript">
-            var map;
+        <script>
+            // Note: This example requires that you consent to location sharing when
+            // prompted by your browser. If you see the error "The Geolocation service
+            // failed.", it means you probably did not give permission for the browser to
+            // locate you.
+
             function initMap() {
-              map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -34.397, lng: 150.644},
-                zoom: 8
-              });
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: -34.397, lng: 150.644},
+                    zoom: 6
+                });
+                var infoWindow = new google.maps.InfoWindow({map: map});
+
+                // Try HTML5 geolocation.
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        infoWindow.setPosition(pos);
+                        infoWindow.setContent('Location found.');
+                        map.setCenter(pos);
+                    }, function() {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleLocationError(false, infoWindow, map.getCenter());
+                }
             }
 
-         </script>
-    </head>
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+            }
+    </script>
+            </head>
     <body>
         <div class="app-bar darcula">
             <div class="makesmaller">
@@ -82,6 +112,7 @@ if(isset($_POST["S"]) OR isset($_POST["F"])) {
                     <input name="F" id="F" type="text">
                 </div>
                 <button type="submit"  class="button success block-shadow-success text-shadow">Button</button>
+                <button id="current_location" class="button success block-shadow-success text-shadow">From Current Location</button>
             </form>
         </div>
         <div class="leader align-center">About</div>
