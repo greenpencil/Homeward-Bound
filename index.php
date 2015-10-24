@@ -1,3 +1,6 @@
+<html>
+<link href="css/metro.min.css" ref="stylesheet">
+
 <?php
 /**
  * Created by PhpStorm.
@@ -7,3 +10,7 @@
  */
 
 ?>
+
+<script src="js/metro.min.js"></script>
+
+</html>
