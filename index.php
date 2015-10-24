@@ -43,7 +43,7 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
         <link href="./css/metro-icons.css" rel="stylesheet" />
         <link href="./css/homeward.css" rel="stylesheet" />
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="./js/metro.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap"></script>
 
@@ -119,7 +119,28 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                     handleLocationError(false, infoWindow, map.getCenter());
                 }
             }
+            
+            function codeAddress(address, map) {
+            var geocoder = new google.maps.Geocoder;
+            geocoder.geocode( { 'address': address}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+              } else {
+                alert("Geocode was not successful for the following reason: " + status);
+              }
+            });
+          }
 
+            $(document).on('click', '#get-me', function()
+            {
+                codeAddress(document.getElementById("S").value, window.map);
+                 codeAddress(document.getElementById("F").value, window.map);
+             });
+            
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                 infoWindow.setPosition(pos);
                 infoWindow.setContent(browserHasGeolocation ?
@@ -146,7 +167,6 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
             
             <div class="call-to-action">
                 <h2>Need to get home? Let us help!</h2>
-                <form autocomplete="off" action="" method="POST" role="form" enctype="multipart/form-data">
                 <div class="input-control file" data-role="input">
                         <input name="S" id="S" type="text" placeholder="Start">
                         <button class="button success" id="current_location" onclick="geoLocate(window.infoWindow, window.map)"><span class="mif-satellite"></span></button>
@@ -154,21 +174,26 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                 <div class="input-control text">
                     <input name="F" id="F" type="text" placeholder="Finish">
                 </div>
-                <button type="submit"  class="button success">Get me home</button>
-            </form>
+                <button id="get-me" class="button success">Get me home</button>
+            
             </div>
             
             <div id="map" style="height:70%"></div>
             
-            <div class="crime-report">
-                crime report to go here
+            <div class="crime-report" id="crime-report">
+                <div class="grid">
+                    <div class="row cells5">
+                        <div class="cell col"></div>
+                        ...
+                        <div class="cell"></div>
+                    </div>
+                </div>
             </div>
             
             
         <div class="leader align-center">About</div>
         <div>
-            <p>HomeWard Bound is a website app developed to get a person home via the safest route available to them, avoiding routes with a high level of crime rate in previous months.
-            Hopefully giving the person the safest route to their destination. Some more words to describe it....</p>
+            <p>Homeward Bound is a webapp which allows you 
         </div>
         
         
