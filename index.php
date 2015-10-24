@@ -33,38 +33,84 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
     <head>
         <title>Homeward Bound</title>
         
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
         <link href="./css/metro.css" rel="stylesheet" />
         <link href="./css/metro-schemes.css" rel="stylesheet" />
         <link href="./css/metro-responsive.css" rel="stylesheet" />
+        <link href="./css/metro-icons.css" rel="stylesheet" />
         <link href="./css/homeward.css" rel="stylesheet" />
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="./js/metro.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap"></script>
+
         <script>
             // Note: This example requires that you consent to location sharing when
             // prompted by your browser. If you see the error "The Geolocation service
             // failed.", it means you probably did not give permission for the browser to
             // locate you.
+            
+            var infoWindow;
+            var map;
 
             function initMap() {
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: -34.397, lng: 150.644},
-                    zoom: 6
+                    map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 53.479, lng: -2.249},
+                    zoom: 12
                 });
-                var infoWindow = new google.maps.InfoWindow({map: map});
+                infoWindow = new google.maps.InfoWindow({map: map});
+                
 
                 // Try HTML5 geolocation.
+                //geoLocate(infoWindow);
+            }
+            
+            function geoLocate(infoWindow, map)
+            {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
                         var pos = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
+                        
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            title: 'location',
+                            Label: 'A',
+                          });
+                        var latlng = {lat: position.coords.latitude, lng: position.coords.longitude};
+                        var geocoder = new google.maps.Geocoder;
+                        
+                        geocoder.geocode({'location': latlng}, function(results, status) {
+                            if (status === google.maps.GeocoderStatus.OK) {
+                              if (results[1]) {
+                                infowindow.setContent(results[1].formatted_address);
+                                  S.value = results[1].formatted_address;
+                              } else {
+                                window.alert('No results found');
+                              }
+                            } else {
+                              window.alert('Geocoder failed due to: ' + status);
+                            }
+                          });
+                        
+                        var infowindow = new google.maps.InfoWindow();
+                        google.maps.event.addListener(marker, 'click', function() {
+                            //infowindow.setContent("place.name");
+                            infowindow.open(map, this);
+                          });
+                        
+                        //S.value = "Your Location";
 
-                        infoWindow.setPosition(pos);
-                        infoWindow.setContent('Location found.');
+                        //infoWindow.setPosition(pos);
+                        //infoWindow.setContent('Location found.');
                         map.setCenter(pos);
+                        map.setZoom(17);
                     }, function() {
                         handleLocationError(true, infoWindow, map.getCenter());
                     });
@@ -97,28 +143,35 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
             </div>
         </div>
         <div class="main padding20">
+            
             <div class="call-to-action">
-                Need to get home? Let us help!
-                <div class=""
-            </div>
-            <div id="map" style="height:50%"></div>
-            <form autocomplete="off" action="" method="POST" role="form" enctype="multipart/form-data">
-                <label>Start</label>
-                <div class="input-control text">
-                    <input name="S" id="S" type="text">
+                <h2>Need to get home? Let us help!</h2>
+                <form autocomplete="off" action="" method="POST" role="form" enctype="multipart/form-data">
+                <div class="input-control file" data-role="input">
+                        <input name="S" id="S" type="text" placeholder="Start">
+                        <button class="button success" id="current_location" onclick="geoLocate(window.infoWindow, window.map)"><span class="mif-satellite"></span></button>
                 </div>
-                <label>Finish</label>
                 <div class="input-control text">
-                    <input name="F" id="F" type="text">
+                    <input name="F" id="F" type="text" placeholder="Finish">
                 </div>
-                <button type="submit"  class="button success block-shadow-success text-shadow">Button</button>
-                <button id="current_location" class="button success block-shadow-success text-shadow">From Current Location</button>
+                <button type="submit"  class="button success">Get me home</button>
             </form>
-        </div>
+            </div>
+            
+            <div id="map" style="height:70%"></div>
+            
+            <div class="crime-report">
+                crime report to go here
+            </div>
+            
+            
         <div class="leader align-center">About</div>
         <div>
             <p>HomeWard Bound is a website app developed to get a person home via the safest route available to them, avoiding routes with a high level of crime rate in previous months.
-            Hopefully giving the person the safest route to there destination. Some more words to describe it....</p>
+            Hopefully giving the person the safest route to their destination. Some more words to describe it....</p>
+        </div>
+        
+        
         </div>
     </body>
 </html>

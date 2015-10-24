@@ -2,6 +2,7 @@
     width:80%;
     margin:0 auto;
     background-color: #fff;
+    position: relative;
 }
 
 .makesmaller {
@@ -14,5 +15,12 @@ body {
 }
 
 .call-to-action {
-    margin-top: 100px;
+    margin-top: 10px;
+    z-index: 10;
+    width: 60%;
+    padding: 15px;
+    background-color: #fff;
+    text-align: center;
+    margin-left: 17%;
+    position: absolute;
 }
