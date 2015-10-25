@@ -21,6 +21,16 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
     <link href="./css/metro-responsive.css" rel="stylesheet"/>
     <link href="./css/metro-icons.css" rel="stylesheet"/>
     <link href="./css/homeward.css" rel="stylesheet"/>
+
+    <script type="text/javascript">
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 53.479, lng: -2.249},
+                zoom: 12
+            });
+        }
+    </script>
+
 </head>
 <body>
 
@@ -49,7 +59,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         <div class="input-control text">
             <input name="F" id="F" value="The University of Salford" type="text" placeholder="Finish">
         </div>
-        <button id="get-me" class="button success">Get me home</button>
+        <button id="get" class="button success">Get me home</button>
 
     </div>
 
@@ -58,7 +68,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
     <br />
 
     <div class="crime-report" id="crime-report">
-        <div class="panel" data-role="panel">
+        <div class="panel" data-role="panel" data-route-id="0">
             <div class="heading bg-emerald">
                 <span class="title">Route 1</span>
             </div>
@@ -66,14 +76,12 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
                 <div class="grid">
                     <div class="row cells8">
                         <div class="cell colspan6">
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
+                            <span id="category"></span>
                         </div>
                         <div class="cell colspan2" style="text-align:center;">
-                            <h3 class="fg-emerald">Weighted score: 678</h3>
+                            <h3 class="fg-emerald">Weighted score: <span id="score"></span></h3>
 
-                            <h2>38</h2>
+                            <h2><span id="crimes"></span></h2>
                             <h4>Total Crimes</h4></div>
                     </div>
                 </div>
@@ -81,22 +89,20 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         </div>
         <br />
 
-        <div class="panel collapsible collapsed" data-role="panel">
+        <div class="panel" data-role="panel" data-route-id="1">
             <div class="heading bg-yellow">
                 <span class="title">Route 2</span>
             </div>
-            <div class="content bg-white" style="display:none;">
+            <div class="content bg-white">
                 <div class="grid">
                     <div class="row cells8">
                         <div class="cell colspan6">
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
+                            <span id="category"></span>
                         </div>
                         <div class="cell colspan2" style="text-align:center;">
-                            <h3 class="fg-yellow">Weighted score: 678</h3>
+                            <h3 class="fg-emerald">Weighted score: <span id="score"></span></h3>
 
-                            <h2>38</h2>
+                            <h2><span id="crimes"></span></h2>
                             <h4>Total Crimes</h4></div>
                     </div>
                 </div>
@@ -104,22 +110,21 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         </div>
         <br />
 
-        <div class="panel collapsible collapsed" data-role="panel">
+
+        <div class="panel" data-role="panel" data-route-id="2">
             <div class="heading bg-orange">
                 <span class="title">Route 3</span>
             </div>
-            <div class="content bg-white" style="display:none;">
+            <div class="content bg-white">
                 <div class="grid">
                     <div class="row cells8">
                         <div class="cell colspan6">
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
+                            <span id="category"></span>
                         </div>
                         <div class="cell colspan2" style="text-align:center;">
-                            <h3 class="fg-orange">Weighted score: 678</h3>
+                            <h3 class="fg-emerald">Weighted score: <span id="score"></span></h3>
 
-                            <h2>38</h2>
+                            <h2><span id="crimes"></span></h2>
                             <h4>Total Crimes</h4></div>
                     </div>
                 </div>
@@ -127,27 +132,27 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         </div>
         <br />
 
-        <div class="panel collapsible collapsed" data-role="panel">
+
+        <div class="panel" data-role="panel" data-route-id="3">
             <div class="heading bg-red">
                 <span class="title">Route 4</span>
             </div>
-            <div class="content bg-white" style="display:none;">
+            <div class="content bg-white">
                 <div class="grid">
                     <div class="row cells8">
                         <div class="cell colspan6">
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
+                            <span id="category"></span>
                         </div>
                         <div class="cell colspan2" style="text-align:center;">
-                            <h3 class="fg-red">Weighted score: 678</h3>
+                            <h3 class="fg-emerald">Weighted score: <span id="score"></span></h3>
 
-                            <h2>38</h2>
+                            <h2><span id="crimes"></span></h2>
                             <h4>Total Crimes</h4></div>
                     </div>
                 </div>
             </div>
         </div>
+        <br />
     </div>
 
     <div class="route-dir" id="route-dir" style="display:none;">
@@ -192,7 +197,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="./js/metro.js"></script>
 
 <script async defer
@@ -204,13 +209,6 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
 
     var start;
     var finish;
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 53.479, lng: -2.249},
-            zoom: 12
-        });
-    }
 
     function geoLocate(infoWindow, map) {
         if (navigator.geolocation) {
@@ -226,6 +224,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
                     title: 'location',
                     Label: 'A'
                 });
+
                 var latlng = {lat: position.coords.latitude, lng: position.coords.longitude};
                 var geocoder = new google.maps.Geocoder;
 
@@ -244,7 +243,6 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
 
                 var infowindow = new google.maps.InfoWindow();
                 google.maps.event.addListener(marker, 'click', function () {
-                    //infowindow.setContent("place.name");
                     infowindow.open(map, this);
                 });
 
@@ -268,24 +266,6 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
             }
         });
     }
-    $(document).on('click', '#get-me', function () {
-        codeAddress(document.getElementById("F").value, window.map);
-        $.ajax({
-            url: './getalt.php',
-            type: 'get',
-            data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value}
-        }).done(function (e) {
-            var data = JSON.Parse(e);
-
-            jQuery.each(data, function (i, val) {
-                // Iterate over crime numbers and add to html
-                // choose colours
-                // Put total onto the side
-                // get route overview and place on map
-                //$("#" + i).append(document.createTextNode(" - " + val));
-            });
-        });
-    });
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
@@ -293,6 +273,47 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
             'Error: The Geolocation service failed.' :
             'Error: Your browser doesn\'t support geolocation.');
     }
+
+    /**
+    function perform() {
+        // codeAddress($("#F").attr("value"), window.map);
+
+        $.getJSON("backend/index.php?start=" + $("#S").val() + "&finish=" + $("#F").val(), function(json) {
+            console.log("Test: " + json);
+            $.each(json, function(index, v) {
+                $.each(v, function(key, value) {
+                    $('span[data-route-id=\"' + index + '\"').text(value["crimes"]["ratings-total"]);
+                });
+            });
+        });
+    }
+
+    $("#get").click(perform);**/
+
+    $("#get").click(function() {
+        $.ajax({
+            url: "backend/index.php",
+            type: "get",
+            data: {'start': $("#S").val(), 'finish': $("#F").val() }
+        }).done(function(result)  {
+            var json = $.parseJSON(result);
+
+            $.each(json, function(index, v) {
+                var route = $('[data-route-id=\"' + index + '\"]');
+                route.find('#score').text(v["crimes"]["ratings-total"]);
+                route.find('#crimes').text(v["crimes"]["crimes-total"]);
+
+                $.each(v["crimes"], function(key, value) {
+                    if (key == "crimes-total" && key == "ratings-total") return;
+                    route.find("#category").html(route.find("#category").html() +
+                            "<h5><b>" + key + "</b>:&nbsp;" + value + "</h5>"
+                    );
+                });
+            });
+        }).fail(function()  {
+            alert("Sorry. Server unavailable. ");
+        });
+    });
 </script>
 </body>
 </html>

@@ -1,19 +1,20 @@
 <?php
-returnMaps("Manchester", "Salford");
 
-function returnMaps($origin, $dest) {
-    $origin = str_replace(" ", "+", $origin);
-    $dest = str_replace(" ", "+", $dest);
-    $routes = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?origin=" . $origin . "&destination=" . $dest . "&key=AIzaSyDPIf8XDKguqBgJo5VzM8eurWmMmOvWxB0&alternatives=true&mode=walking");
+returnMaps($_GET["start"], $_GET["finish"]);
+
+function returnMaps($start, $finish) {
+    $start = str_replace(" ", "+", $start);
+    $finish = str_replace(" ", "+", $finish);
+    $routes = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?origin=" . $start . "&destination=" . $finish . "&key=AIzaSyDPIf8XDKguqBgJo5VzM8eurWmMmOvWxB0&alternatives=true&mode=walking");
     $json = json_decode($routes, true);
     $steps = array();
     $directions = array();
-    $polylines = array();
+    $poly = array();
     $i = 0;
     foreach ($json["routes"] as $route) {
         $directions[$i] = array();
         $steps[$i] = array();
-        array_push($polylines, $route["overview_polyline"]["points"]);
+        array_push($poly, $route["overview_polyline"]["points"]);
         foreach ($route["legs"][0]["steps"] as $step) {
             $lat = $step["end_location"]["lat"];
             $long = $step["end_location"]["lng"];
@@ -27,7 +28,7 @@ function returnMaps($origin, $dest) {
     $dataSet = getCrimeData($polySet);
     $crimeRatings = weightCrimes($dataSet);
 
-    generateRoot($crimeRatings, $directions, $polylines, $origin, $dest);
+    generateRoot($crimeRatings, $directions, $poly);
 }
 
 
@@ -178,7 +179,7 @@ function weightCrimes($dataSet)
     return $valuesTotal;
 }
 
-function generateRoot($crimeRatings, $directions, $mapsPoly, $start, $end) {
+function generateRoot($crimeRatings, $directions, $mapsPoly) {
     $results = array();
     for ($i=0; $i<count($directions) && $i<count($crimeRatings) && $i<count($mapsPoly); $i++) {
         array_push($results, array(
@@ -187,6 +188,6 @@ function generateRoot($crimeRatings, $directions, $mapsPoly, $start, $end) {
             "poly" => $mapsPoly[$i]
         ));
     }
-    print(htmlspecialchars(json_encode($results, JSON_PRETTY_PRINT)));
+    print(json_encode($results, JSON_PRETTY_PRINT));
 }
 ?>
