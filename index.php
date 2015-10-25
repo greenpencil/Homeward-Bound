@@ -143,28 +143,17 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                     type: 'get',
                     data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value }
                 }).done(function(e){
+                    var data = JSON.Parse(e);
                     
-                    var decodedPath = google.maps.geometry.encoding.decodePath(e);
-                    
-                    var routemap = [
-                    {lat: 37.772, lng: -122.214},
-                    {lat: 21.291, lng: -157.821},
-                    {lat: -18.142, lng: 178.431},
-                    {lat: -27.467, lng: 153.027}
-                  ];
-                  var route = new google.maps.Polyline({
-                    path: decodedPath,
-                    geodesic: true,
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2
-                  });
-                    
-                        route.setMap(window.map);
-                    $('#crime-report').fadeIn(250);
-                    $('#route-dir').fadeIn(250);
+                    jQuery.each(data, function(i, val) {
+                        // Iterate over crime numbers and add to html
+                        // choose colours
+                        // Put total onto the side
+                        // get route overview and place on map
+                      //$("#" + i).append(document.createTextNode(" - " + val));
+                    });
                 });
-             });
+            });
             
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                 infoWindow.setPosition(pos);
@@ -206,17 +195,6 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
             <div id="map" style="height:70%"></div>
             
             <div class="crime-report" id="crime-report" style="display:none;">
-                <h2>Crime Report</h2>
-                <div class="grid">
-                    <div class="row cells8">
-                        <div class="cell colspan6">
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
-                            <p><h5>Theft: 38</h5></p>
-                        </div>
-                        <div class="cell colspan2" style="text-align:center;"><h2>38</h2><br/><h4>Total Crimes</h4></div>
-                    </div>
-                </div>
             </div>
             
             <div class="route-dir" id="route-dir" style="display:none;">
