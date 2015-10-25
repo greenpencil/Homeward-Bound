@@ -337,7 +337,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
                 $.each(v["crimes"], function(key, value) {
                     if (key == "crimes-total" && key == "ratings-total") return;
                     route.find("#category").html(route.find("#category").html() +
-                            "<h5><b>" + key + "</b>:&nbsp;" + value + "</h5>"
+                            "<h5><b>" + key.replace('-', ' ').replace('-', ' ') + "</b>:&nbsp;" + value + "</h5>"
                     );
                 });
                 
