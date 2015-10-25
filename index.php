@@ -45,6 +45,8 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="./js/metro.js"></script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=geometry"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap"></script>
 
         <script>
@@ -55,14 +57,15 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
             
             var infoWindow;
             var map;
+            
+            var start;
+            var finish;
 
             function initMap() {
                     map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: 53.479, lng: -2.249},
                     zoom: 12
-                });
-                infoWindow = new google.maps.InfoWindow({map: map});
-                
+                });                
 
                 // Try HTML5 geolocation.
                 //geoLocate(infoWindow);
@@ -121,24 +124,42 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
             }
             
             function codeAddress(address, map) {
-            var geocoder = new google.maps.Geocoder;
-            geocoder.geocode( { 'address': address}, function(results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                map.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location
-                });
-              } else {
-                alert("Geocode was not successful for the following reason: " + status);
-              }
+                var geocoder = new google.maps.Geocoder;
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                  if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                  } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                  }
             });
           }
 
             $(document).on('click', '#get-me', function()
             {
-                codeAddress(document.getElementById("S").value, window.map);
-                 codeAddress(document.getElementById("F").value, window.map);
+                codeAddress(document.getElementById("F").value, window.map);
+                $.ajax({
+                    url: './getroutes.php',
+                    type: 'get',
+                    data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value }
+                }).done(function(e){
+                    var decodedPath = google.maps.geometry.encoding.decodePath(e.replace(/^\s+|\s+$/g, ''));
+                    var decodedLevels = decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
+                    setRegion = new google.maps.Polyline({
+                        locations: decodedPath,
+                        levels: decodedLevels,
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                        map: window.map
+                    });
+                });
+                //codeAddress(document.getElementById("S").value, window.map);
+                 //codeAddress(document.getElementById("F").value, window.map);
              });
             
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -146,6 +167,16 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                 infoWindow.setContent(browserHasGeolocation ?
                     'Error: The Geolocation service failed.' :
                     'Error: Your browser doesn\'t support geolocation.');
+            }
+            
+            function decodeLevels(encodedLevelsString) {
+                var decodedLevels = [];
+
+                for (var i = 0; i < encodedLevelsString.length; ++i) {
+                    var level = encodedLevelsString.charCodeAt(i) - 63;
+                    decodedLevels.push(level);
+                }
+                return decodedLevels;
             }
     </script>
             </head>
@@ -172,7 +203,7 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                         <button class="button success" id="current_location" onclick="geoLocate(window.infoWindow, window.map)"><span class="mif-satellite"></span></button>
                 </div>
                 <div class="input-control text">
-                    <input name="F" id="F" type="text" placeholder="Finish">
+                    <input name="F" id="F" value="The University of Salford" type="text" placeholder="Finish">
                 </div>
                 <button id="get-me" class="button success">Get me home</button>
             
