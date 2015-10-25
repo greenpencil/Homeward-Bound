@@ -1,7 +1,7 @@
 <?php
 
-
-
+	returnMaps('Manchester','Salford');
+	
     function returnMaps($origin, $dest) {
 		$origin = str_replace(" ","+",$origin);
 		$dest = str_replace(" ","+",$dest);
@@ -22,8 +22,8 @@
 		}
 		//var_dump($steps);
 		
-		
 		getCrimeRate(calculatePoly($steps, 0.01), $json);
+		//getDirections($json);
     }
    // echo returnMaps(, "Salford University");
 	
@@ -69,7 +69,21 @@
 		return $out;
 	}
 
-
+	function getDirections($json) {
+		$routes = array();
+		$i = 0;
+		foreach($json["routes"] as $route) {
+			$steps[$i] = array();
+			foreach($route["legs"][0]["steps"] as $step){
+					$html_instructions = $step["html_instructions"];
+					array_push($steps[$i],$html_instructions);
+			}
+			$i++;
+			//var_dump($steps);
+		}
+		var_dump($json['routes'][$TheLowestCrimeRateArray]['overview_polyline']['points']);
+	}
+	
 	function getCrimeRate($routes = array(), $json)
 	{
 
@@ -98,7 +112,8 @@
 			$array_number_set++;
 		}
 
-		 echo $json['routes'][$TheLowestCrimeRateArray]['overview_polyline']['points'];
+		 //echo $json['routes'][$TheLowestCrimeRateArray]['overview_polyline']['points'];
+		 var_dump($json['routes'][$TheLowestCrimeRateArray]);
 	}
 	function crime_rate($poly) {
 		$police_decode =	json_decode(file_get_contents("https://data.police.uk/api/crimes-street/all-crime?poly=" . $poly . "&date=2015-08"));
