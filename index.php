@@ -21,6 +21,209 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
     <link href="./css/metro-responsive.css" rel="stylesheet"/>
     <link href="./css/metro-icons.css" rel="stylesheet"/>
     <link href="./css/homeward.css" rel="stylesheet"/>
+            </head>
+    <body>
+        <div class="app-bar darcula">
+            <div class="makesmaller">
+                <a class="app-bar-element" href="...">Homeward Bound</a>
+
+                <span class="app-bar-divider"></span>
+
+                <ul class="app-bar-menu">
+                    <li><a href="">About</a></li>
+                    <li><a href="">Help</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main padding20">
+            
+            <div class="call-to-action">
+                <h2>Need to get home? Let us help!</h2>
+                <div class="input-control file" data-role="input">
+                        <input name="S" id="S" type="text" placeholder="Start">
+                        <button class="button success" id="current_location" onclick="geoLocate(window.infoWindow, window.map)"><span class="mif-satellite"></span></button>
+                </div>
+                <div class="input-control text">
+                    <input name="F" id="F" value="The University of Salford" type="text" placeholder="Finish">
+                </div>
+                <button id="get-me" class="button success">Get me home</button>
+            
+            </div>
+            
+            <div id="map" style="height:600px"></div>
+            
+            <br/>
+            <div class="crime-report" id="crime-report" >
+                <div class="panel" data-role="panel">
+                    <div class="heading bg-emerald">
+                        <span class="title">Route 1</span>
+                    </div>
+                    <div class="content bg-white">
+                        <div class="grid">
+                            <div class="row cells8">
+                                <div class="cell colspan6">
+                                    <p><h5>Theft: 38</h5></p>
+                                    <p><h5>Theft: 38</h5></p>
+                                    <p><h5>Theft: 38</h5></p>
+                                </div>
+                                <div class="cell colspan2" style="text-align:center;">
+                                    <h3 class="fg-emerald">Weighted score: 678</h3>
+                                    <h2>38</h2>
+                                    <h4>Total Crimes</h4></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                    <div class="panel collapsible collapsed" data-role="panel">
+                                    <div class="heading bg-yellow">
+                                        <span class="title">Route 2</span>
+                                    </div>
+                                    <div class="content bg-white" style="display:none;">
+                                        <div class="grid">
+                                            <div class="row cells8">
+                                                <div class="cell colspan6">
+                                                    <p><h5>Theft: 38</h5></p>
+                                                    <p><h5>Theft: 38</h5></p>
+                                                    <p><h5>Theft: 38</h5></p>
+                                                </div>
+                                                <div class="cell colspan2" style="text-align:center;">
+                                                    <h3 class="fg-yellow">Weighted score: 678</h3>
+                                                    <h2>38</h2>
+                                                    <h4>Total Crimes</h4></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                <br/>
+                <div class="panel collapsible collapsed" data-role="panel">
+                    <div class="heading bg-orange">
+                        <span class="title">Route 3</span>
+                    </div>
+                    <div class="content bg-white" style="display:none;">
+                        <div class="grid">
+                            <div class="row cells8">
+                                <div class="cell colspan6">
+                                    <p><h5>Theft: 38</h5></p>
+                                    <p><h5>Theft: 38</h5></p>
+                                    <p><h5>Theft: 38</h5></p>
+                                </div>
+                                <div class="cell colspan2" style="text-align:center;">
+                                    <h3 class="fg-orange">Weighted score: 678</h3>
+                                    <h2>38</h2>
+                                    <h4>Total Crimes</h4></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="panel collapsible collapsed" data-role="panel">
+                    <div class="heading bg-red">
+                        <span class="title">Route 4</span>
+                    </div>
+                    <div class="content bg-white" style="display:none;">
+                        <div class="grid">
+                            <div class="row cells8">
+                                <div class="cell colspan6">
+                                    <p><h5>Theft: 38</h5></p>
+                                    <p><h5>Theft: 38</h5></p>
+                                    <p><h5>Theft: 38</h5></p>
+                                </div>
+                                <div class="cell colspan2" style="text-align:center;">
+                                    <h3 class="fg-red">Weighted score: 678</h3>
+                                    <h2>38</h2>
+                                    <h4>Total Crimes</h4></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="route-dir" id="route-dir" style="display:none;">
+                <h2>Directions</h2>
+                <div>Dom's stuff goes here</div>
+            </div>
+            
+        <br/></br>
+        <h1>About</h1>
+        <div>
+            <p>Homeward Bound is a webapp which will decide the safest route for you to get home. By using weighted crimes from the Police's online database we check all possible routes and search around the route for the most crime, easily letting you know the safest path. After we compute the data we show it back to you so you can make a decision on how you travel.</p>
+            <p>This app was created in 24 hours by Team Wiggle Wiggle at HackManchester 2015. Wiggle Wiggle were a team of 4 2nd year Computer Science undergraduates from Salford University.</p>
+        </div>
+        </br>
+        <h1>Help</h1>
+        <div>
+            <p>Homeward Bound is very simple to use, simply put in a start point and then put in your destination, if you're not sure where ou areyou can use the satellitte button and we will find you.</p>
+            <p>If you require help during your travel please contact the police at 999 for emergencies or 101 for none-emergencies.</p>
+        </div>
+        </br>
+        <h1>Contact</h1>
+        <div>
+            <p>Homeward Bound was created by:
+                <ul>
+                    <li>Frontend design and Javascript - Katie Paxton-Fear</li>
+                    <li>Backend, crime and map data - Lewis Campbell</li>
+                    <li>Backend, algorithm for finding crimes - Dominic Wright</li>
+                    <li>Backend, algorithm for weighting crimes - Tom Willington</li>
+                </ul>
+            </p>
+        </div>
+        <div class="input-control text">
+            <input name="F" id="F" value="The University of Salford" type="text" placeholder="Finish">
+        </div>
+        <button id="get-me" class="button success">Get me home</button>
+
+    </div>
+
+    <div id="map" style="height:70%"></div>
+
+    <div class="crime-report" id="crime-report" style="display:none;">
+    </div>
+
+    <div class="route-dir" id="route-dir" style="display:none;">
+        <h2>Directions</h2>
+        <div>Dom's stuff goes here</div>
+    </div>
+
+    <br /><br />
+    <h1>About</h1>
+
+    <div>
+        <p>Homeward Bound is a webapp which will decide the safest route for you to get home. By using weighted crimes
+            from the Police's online database we check all possible routes and search around the route for the most
+            crime, easily letting you know the safest path. After we compute the data we show it back to you so you can
+            make a decision on how you travel.</p>
+
+        <p>This app was created in 24 hours by Team Wiggle Wiggle at HackManchester 2015. Wiggle Wiggle were a team of 4
+            2nd year Computer Science undergraduates from Salford University.</p>
+    </div>
+    <br />
+    <h1>Help</h1>
+
+    <div>
+        <p>Homeward Bound is very simple to use, simply put in a start point and then put in your destination, if you're
+            not sure where ou areyou can use the satellitte button and we will find you.</p>
+
+        <p>If you require help during your travel please contact the police at 999 for emergencies or 101 for
+            none-emergencies.</p>
+    </div>
+    <br />
+    <h1>Contact</h1>
+
+    <div>
+        <p>Homeward Bound was created by:
+        <ul>
+            <li>Frontend design and Javascript - Katie Paxton-Fear</li>
+            <li>Backend, crime and map data - Lewis Campbell</li>
+            <li>Backend, algorithm for finding crimes - Dominic Wright</li>
+            <li>Backend, algorithm for weighting crimes - Tom Willington</li>
+        </ul>
+    </div>
+
+</div>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="./js/metro.js"></script>
@@ -96,18 +299,26 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
                     alert("Geocode was not successful for the following reason: " + status);
                 }
             });
-        }
-
-        $(document).on('click', '#get-me', function () {
-            codeAddress(document.getElementById("F").value, window.map);
-            $.ajax({
-                url: './getroutes.php',
-                type: 'get',
-                data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value}
-            }).done(function (e) {
-                var data = JSON.Parse(e);
+          }
+            $(document).on('click', '#get-me', function()
+            {
+                codeAddress(document.getElementById("F").value, window.map);
+                $.ajax({
+                    url: './getalt.php',
+                    type: 'get',
+                    data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value }
+                }).done(function(e){
+                    var data = JSON.Parse(e);
+                    
+                    jQuery.each(data, function(i, val) {
+                        // Iterate over crime numbers and add to html
+                        // choose colours
+                        // Put total onto the side
+                        // get route overview and place on map
+                      //$("#" + i).append(document.createTextNode(" - " + val));
+                    });
+                });
             });
-        });
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
@@ -116,81 +327,5 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
                 'Error: Your browser doesn\'t support geolocation.');
         }
     </script>
-</head>
-<body>
-<div class="app-bar darcula">
-    <div class="makesmaller">
-        <span class="app-bar-element">Homeward Bound</span>
-        <span class="app-bar-divider"></span>
-        <ul class="app-bar-menu">
-            <li><a href="">About</a></li>
-            <li><a href="">Help</a></li>
-            <li><a href="">Contact</a></li>
-        </ul>
-    </div>
-</div>
-<div class="main padding20">
-
-    <div class="call-to-action">
-        <h2>Need to get home? Let us help!</h2>
-
-        <div class="input-control file" data-role="input">
-            <input name="S" id="S" type="text" placeholder="Start">
-            <button class="button success" id="current_location" onclick="geoLocate(window.infoWindow, window.map)">
-                <span class="mif-satellite"></span></button>
-        </div>
-        <div class="input-control text">
-            <input name="F" id="F" value="The University of Salford" type="text" placeholder="Finish">
-        </div>
-        <button id="get-me" class="button success">Get me home</button>
-
-    </div>
-
-    <div id="map" style="height:70%"></div>
-
-    <div class="crime-report" id="crime-report" style="display:none;">
-    </div>
-
-    <div class="route-dir" id="route-dir" style="display:none;">
-        <h2>Directions</h2>
-        <div>Dom's stuff goes here</div>
-    </div>
-
-    <br /><br />
-    <h1>About</h1>
-
-    <div>
-        <p>Homeward Bound is a webapp which will decide the safest route for you to get home. By using weighted crimes
-            from the Police's online database we check all possible routes and search around the route for the most
-            crime, easily letting you know the safest path. After we compute the data we show it back to you so you can
-            make a decision on how you travel.</p>
-
-        <p>This app was created in 24 hours by Team Wiggle Wiggle at HackManchester 2015. Wiggle Wiggle were a team of 4
-            2nd year Computer Science undergraduates from Salford University.</p>
-    </div>
-    <br />
-    <h1>Help</h1>
-
-    <div>
-        <p>Homeward Bound is very simple to use, simply put in a start point and then put in your destination, if you're
-            not sure where ou areyou can use the satellitte button and we will find you.</p>
-
-        <p>If you require help during your travel please contact the police at 999 for emergencies or 101 for
-            none-emergencies.</p>
-    </div>
-    <br />
-    <h1>Contact</h1>
-
-    <div>
-        <p>Homeward Bound was created by:
-        <ul>
-            <li>Frontend design and Javascript - Katie Paxton-Fear</li>
-            <li>Backend, crime and map data - Lewis Campbell</li>
-            <li>Backend, algorithm for finding crimes - Dominic Wright</li>
-            <li>Backend, algorithm for weighting crimes - Tom Willington</li>
-        </ul>
-    </div>
-
-</div>
 </body>
 </html>
