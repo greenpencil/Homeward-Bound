@@ -9,10 +9,12 @@
 		$json=json_decode($routes, true);
 		$steps = array();
 		$directions = array();
+		$polylines = array();
 		$i = 0;
 		foreach($json["routes"] as $route) {
 			$directions[$i] = array();
 			$steps[$i] = array();
+			array_push($polylines, $route['overview_polyline']['points']);
 			foreach($route["legs"][0]["steps"] as $step){
 					$lat = $step["end_location"]["lat"];
 					$long = $step["end_location"]["lng"];
@@ -31,9 +33,12 @@
 		$noCrimes = calculateCrimeStats($dataSet);
 		//var_dump($noCrimes);
 		$crimeWeightData = weightCrimes($dataSet)[0];
-		var_dump($crimeWeightData);
+		//var_dump($crimeWeightData);
 		$crimeFreqData = weightCrimes($dataSet)[1];
-		var_dump($crimeFreqData);
+		//var_dump($crimeFreqData);
+		//var_dump($polylines);
+		
+		generateRoot($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polylines);
     }
 
 	
@@ -198,7 +203,11 @@
 	
 	
 	
-	
+	function generateRoot($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polyline){
+		$root = array($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polyline);
+		$json = json_encode($root, JSON_PRETTY_PRINT);
+		print(htmlspecialchars($json));
+	}
 	
 	
 	
