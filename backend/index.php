@@ -179,13 +179,14 @@ function weightCrimes($dataSet)
 }
 
 function generateRoot($crimeRatings, $directions, $mapsPoly, $start, $end) {
-    $result = array(
-        "start" => $start,
-        "end" => $end,
-        "crime-ratings" => $crimeRatings,
-        "directions" => $directions,
-        "maps-poly" => $mapsPoly
-    );
-    print(htmlspecialchars(json_encode($result, JSON_PRETTY_PRINT)));
+    $results = array();
+    for ($i=0; $i<count($directions) && $i<count($crimeRatings) && $i<count($mapsPoly); $i++) {
+        array_push($results, array(
+            "crimes" => $crimeRatings[$i],
+            "directions" => $directions[$i],
+            "poly" => $mapsPoly[$i]
+        ));
+    }
+    print(htmlspecialchars(json_encode($results, JSON_PRETTY_PRINT)));
 }
 ?>
