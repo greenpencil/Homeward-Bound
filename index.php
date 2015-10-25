@@ -67,8 +67,8 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
 
     <br />
 
-    <div class="crime-report" id="crime-report">
-        <div class="panel" data-role="panel" data-route-id="0">
+    <div class="crime-report" id="crime-report" style="display:none;">
+        <div class="panel" data-role="panel" data-route-id="0"  style="display:none;">
             <div class="heading bg-emerald">
                 <span class="title">Route 1</span>
             </div>
@@ -89,7 +89,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         </div>
         <br />
 
-        <div class="panel" data-role="panel" data-route-id="1">
+        <div class="panel" data-role="panel" data-route-id="1" style="display:none;">
             <div class="heading bg-yellow">
                 <span class="title">Route 2</span>
             </div>
@@ -111,7 +111,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         <br />
 
 
-        <div class="panel" data-role="panel" data-route-id="2">
+        <div class="panel" data-role="panel" data-route-id="2"  style="display:none;">
             <div class="heading bg-orange">
                 <span class="title">Route 3</span>
             </div>
@@ -133,7 +133,7 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
         <br />
 
 
-        <div class="panel" data-role="panel" data-route-id="3">
+        <div class="panel" data-role="panel" data-route-id="3"  style="display:none;">
             <div class="heading bg-red">
                 <span class="title">Route 4</span>
             </div>
@@ -296,12 +296,43 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
             type: "get",
             data: {'start': $("#S").val(), 'finish': $("#F").val() }
         }).done(function(result)  {
+            $('#crime-report').show();
             var json = $.parseJSON(result);
 
             $.each(json, function(index, v) {
                 var route = $('[data-route-id=\"' + index + '\"]');
                 route.find('#score').text(v["crimes"]["ratings-total"]);
                 route.find('#crimes').text(v["crimes"]["crimes-total"]);
+                
+                var decodedPath = google.maps.geometry.encoding.decodePath(v["poly"]);
+                
+                var strokeColor;
+                
+                if(index == 0)
+                    {
+                        strokeColor="#008A00";
+                    }
+                else if(index == 1)
+                    {
+                        strokeColor="#E3C800";
+                    }
+                else if(index == 2)
+                    {
+                        strokeColor="#FA6800";
+                    }
+                else
+                    {
+                        strokeColor="#CE352C";
+                    }
+                    
+                  var poly = new google.maps.Polyline({
+                    path: decodedPath,
+                    geodesic: true,
+                    strokeColor: strokeColor,
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                  });
+                    poly.setMap(window.map);
 
                 $.each(v["crimes"], function(key, value) {
                     if (key == "crimes-total" && key == "ratings-total") return;
@@ -309,6 +340,8 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
                             "<h5><b>" + key + "</b>:&nbsp;" + value + "</h5>"
                     );
                 });
+                
+                route.show();
             });
         }).fail(function()  {
             alert("Sorry. Server unavailable. ");
