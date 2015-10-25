@@ -25,11 +25,9 @@ function returnMaps($origin, $dest) {
     }
     $polySet = calculatePoly($steps, 0.01);
     $dataSet = getCrimeData($polySet);
-    $noCrimes = calculateCrimeStats($dataSet);
-    $crimeWeightData = weightCrimes($dataSet)[0];
-    $crimeFreqData = weightCrimes($dataSet)[1];
+    $crimeRatings = weightCrimes($dataSet);
 
-    generateRoot($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polylines);
+    generateRoot($crimeRatings, $directions, $polylines, $origin, $dest);
 }
 
 
@@ -68,7 +66,6 @@ function plotPoints($x1, $y1, $x2, $y2, $d) {
     );
 }
 
-
 function getCrimeData($polySet) {
     $policeJsonArray = array();
     for ($i = 0; $i < count($polySet); $i++) {
@@ -91,22 +88,12 @@ function makePoliceAPIRequest($latLngStr) {
     return file_get_contents("https://data.police.uk/api/crimes-street/all-crime?poly=" . $latLngStr . "&date=2015-08");
 }
 
-function calculateCrimeStats($dataSet)
-{
-    $noCrimes = array();
-    foreach ($dataSet as $data) {
-        array_push($noCrimes, count($data));
-    }
-    return $noCrimes;
-}
-
 function weightCrimes($dataSet)
 {
-    $crimeFrequenciesArray = array();
-    $totals = array();
+    $valuesTotal = array();
     foreach ($dataSet as $data) {
-        $count = 0;
-        $crimeFrequencies = array(
+        $rating = 0;
+        $values = array(
             "possession-of-weapons" => 0,
             "violent-crime" => 0,
             "theft-from-the-person" => 0,
@@ -121,78 +108,84 @@ function weightCrimes($dataSet)
             "other-theft" => 0,
             "shoplifting" => 0,
             "other-crime" => 0,
+            "crimes-total" => count($data),
+            "ratings-total" => 0
         );
 
         foreach ($data as $crime) {
             switch ($crime->category) {
                 case "possession-of-weapons":
-                    $count += 9;
-                    $crimeFrequencies["possession-of-weapons"] += 1;
+                    $rating += 9;
+                    $values["possession-of-weapons"] += 1;
                     break;
                 case "violent-crime":
-                    $count += 9;
-                    $crimeFrequencies["violent-crime"] += 1;
+                    $rating += 9;
+                    $values["violent-crime"] += 1;
                     break;
                 case "theft-from-the-person":
-                    $count += 8;
-                    $crimeFrequencies["theft-from-the-person"] += 1;
+                    $rating += 8;
+                    $values["theft-from-the-person"] += 1;
                     break;
                 case "robbery":
-                    $count += 8;
-                    $crimeFrequencies["robbery"] += 1;
+                    $rating += 8;
+                    $values["robbery"] += 1;
                     break;
                 case "anti-social-behaviour":
-                    $count += 7;
-                    $crimeFrequencies["anti-social-behaviour"] += 1;
+                    $rating += 7;
+                    $values["anti-social-behaviour"] += 1;
                     break;
                 case "public-order":
-                    $count += 4;
-                    $crimeFrequencies["public-order"] += 1;
+                    $rating += 4;
+                    $values["public-order"] += 1;
                     break;
                 case "vehicle-crime":
-                    $count += 4;
-                    $crimeFrequencies["vehicle-crime"] += 1;
+                    $rating += 4;
+                    $values["vehicle-crime"] += 1;
                     break;
                 case "burglary":
-                    $count += 3;
-                    $crimeFrequencies["burglary"] += 1;
+                    $rating += 3;
+                    $values["burglary"] += 1;
                     break;
                 case "criminal-damage-arson":
-                    $count += 2;
-                    $crimeFrequencies["criminal-damage-arson"] += 1;
+                    $rating += 2;
+                    $values["criminal-damage-arson"] += 1;
                     break;
                 case "drugs":
-                    $count += 1;
-                    $crimeFrequencies["drugs"] += 1;
+                    $rating += 1;
+                    $values["drugs"] += 1;
                     break;
                 case "bicycle-theft":
-                    $count += 2;
-                    $crimeFrequencies["bicycle-theft"] += 1;
+                    $rating += 2;
+                    $values["bicycle-theft"] += 1;
                     break;
                 case "other-theft":
-                    $count += 1;
-                    $crimeFrequencies["possession-of-weapons"] += 1;
+                    $rating += 1;
+                    $values["possession-of-weapons"] += 1;
                     break;
                 case "shoplifting":
-                    $count += 1;
-                    $crimeFrequencies["shoplifting"] += 1;
+                    $rating += 1;
+                    $values["shoplifting"] += 1;
                     break;
                 case "other-crime":
-                    $crimeFrequencies["other-crime"] += 1;
-                    $count += 1;
+                    $values["other-crime"] += 1;
+                    $rating += 1;
                     break;
             }
         }
-        array_push($totals, $count);
-        array_push($crimeFrequenciesArray, $crimeFrequencies);
+        $values["ratings-total"] = $rating;
+        array_push($valuesTotal, $values);
     }
-    return array($totals, $crimeFrequenciesArray);
+    return $valuesTotal;
 }
 
-function generateRoot($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polyline) {
-    $root = array($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polyline);
-    $json = json_encode($root, JSON_PRETTY_PRINT);
-    print(htmlspecialchars($json));
+function generateRoot($crimeRatings, $directions, $mapsPoly, $start, $end) {
+    $result = array(
+        "start" => $start,
+        "end" => $end,
+        "crime-ratings" => $crimeRatings,
+        "directions" => $directions,
+        "maps-poly" => $mapsPoly
+    );
+    print(htmlspecialchars(json_encode($result, JSON_PRETTY_PRINT)));
 }
 ?>
-
