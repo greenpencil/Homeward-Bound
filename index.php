@@ -190,59 +190,6 @@ if (isset($_POST["S"]) && isset($_POST["F"])) {
             <li>Backend, algorithm for weighting crimes - Tom Willington</li>
         </ul>
     </div>
-    <div class="input-control text">
-        <input name="F" id="F" value="The University of Salford" type="text" placeholder="Finish">
-    </div>
-    <button id="get-me" class="button success">Get me home</button>
-</div>
-
-<div id="map" style="height:70%"></div>
-
-<div class="crime-report" id="crime-report" style="display:none;">
-</div>
-
-<div class="route-dir" id="route-dir" style="display:none;">
-    <h2>Directions</h2>
-
-    <div>Dom's stuff goes here</div>
-</div>
-
-<br /><br />
-
-<h1>About</h1>
-
-<div>
-    <p>Homeward Bound is a webapp which will decide the safest route for you to get home. By using weighted crimes
-        from the Police's online database we check all possible routes and search around the route for the most
-        crime, easily letting you know the safest path. After we compute the data we show it back to you so you can
-        make a decision on how you travel.</p>
-
-    <p>This app was created in 24 hours by Team Wiggle Wiggle at HackManchester 2015. Wiggle Wiggle were a team of 4
-        2nd year Computer Science undergraduates from Salford University.</p>
-</div>
-<br />
-
-<h1>Help</h1>
-
-<div>
-    <p>Homeward Bound is very simple to use, simply put in a start point and then put in your destination, if you're
-        not sure where ou areyou can use the satellitte button and we will find you.</p>
-
-    <p>If you require help during your travel please contact the police at 999 for emergencies or 101 for
-        none-emergencies.</p>
-</div>
-<br />
-
-<h1>Contact</h1>
-
-<div>
-    <p>Homeward Bound was created by:
-    <ul>
-        <li>Frontend design and Javascript - Katie Paxton-Fear</li>
-        <li>Backend, crime and map data - Lewis Campbell</li>
-        <li>Backend, algorithm for finding crimes - Dominic Wright</li>
-        <li>Backend, algorithm for weighting crimes - Tom Willington</li>
-    </ul>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
