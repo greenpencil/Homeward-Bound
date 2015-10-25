@@ -45,9 +45,8 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="./js/metro.js"></script>
-
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=geometry"></script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap"></script>
+        
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap&libraries=geometry"></script>
 
         <script>
             // Note: This example requires that you consent to location sharing when
@@ -146,17 +145,34 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                     type: 'get',
                     data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value }
                 }).done(function(e){
-                    var decodedPath = google.maps.geometry.encoding.decodePath(e.replace(/^\s+|\s+$/g, ''));
-                    var decodedLevels = decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-
-                    setRegion = new google.maps.Polyline({
-                        locations: decodedPath,
-                        levels: decodedLevels,
-                        strokeColor: "#FF0000",
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2,
-                        map: window.map
-                    });
+                  //  
+                  //  var decodedLevels = decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                  //  setRegion = new google.maps.Polyline({
+                  //      locations: decodedPath,
+                   //     levels: decodedLevels,
+                   //     strokeColor: "#FF0000",
+                   //     strokeOpacity: 1.0,
+                 //       strokeWeight: 2,
+                   //     map: window.map
+                //   });
+                    
+                    var decodedPath = google.maps.geometry.encoding.decodePath(e);
+                    
+                    var routemap = [
+                    {lat: 37.772, lng: -122.214},
+                    {lat: 21.291, lng: -157.821},
+                    {lat: -18.142, lng: 178.431},
+                    {lat: -27.467, lng: 153.027}
+                  ];
+                  var route = new google.maps.Polyline({
+                    path: decodedPath,
+                    geodesic: true,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                  });
+                    
+                        route.setMap(window.map);
                 });
                 //codeAddress(document.getElementById("S").value, window.map);
                  //codeAddress(document.getElementById("F").value, window.map);
@@ -167,16 +183,6 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                 infoWindow.setContent(browserHasGeolocation ?
                     'Error: The Geolocation service failed.' :
                     'Error: Your browser doesn\'t support geolocation.');
-            }
-            
-            function decodeLevels(encodedLevelsString) {
-                var decodedLevels = [];
-
-                for (var i = 0; i < encodedLevelsString.length; ++i) {
-                    var level = encodedLevelsString.charCodeAt(i) - 63;
-                    decodedLevels.push(level);
-                }
-                return decodedLevels;
             }
     </script>
             </head>

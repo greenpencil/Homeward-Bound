@@ -25,7 +25,7 @@
 		
 		getCrimeRate(calculatePoly($steps, 0.01), $json);
     }
-    echo returnMaps("Manchester University", "Salford University");
+   // echo returnMaps(, "Salford University");
 	
 	function calculateTheta($x1, $y1, $x2, $y2){
 		$tanTheta = ($y2-$y1)/($x2-$x1);
@@ -97,7 +97,8 @@
 			}
 			$array_number_set++;
 		}
-		 echo(json_encode($json['0']['routes']));
+
+		 echo $json['routes'][$TheLowestCrimeRateArray]['overview_polyline']['points'];
 	}
 	function crime_rate($poly) {
 		$police_decode =	json_decode(file_get_contents("https://data.police.uk/api/crimes-street/all-crime?poly=" . $poly . "&date=2015-08"));
