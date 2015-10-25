@@ -38,7 +38,7 @@
 		//var_dump($crimeFreqData);
 		//var_dump($polylines);
 		
-		generateRoot($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polylines);
+		return generateRoot($noCrimes, $crimeWeightData, $crimeFreqData, $directions, $polylines);
     }
 
 	
