@@ -49,17 +49,15 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiDz1ZZDf9DFvjXJuhHVnP-KBZXT5EIo8&callback=initMap&libraries=geometry"></script>
 
         <script>
-            // Note: This example requires that you consent to location sharing when
-            // prompted by your browser. If you see the error "The Geolocation service
-            // failed.", it means you probably did not give permission for the browser to
-            // locate you.
-            
             var infoWindow;
             var map;
             
             var start;
             var finish;
-
+            
+             //$('#crime-report').hide();
+             //$('#route-dir').hide();
+            
             function initMap() {
                     map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: 53.479, lng: -2.249},
@@ -145,16 +143,6 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                     type: 'get',
                     data: {'start': document.getElementById("S").value, 'finish': document.getElementById("F").value }
                 }).done(function(e){
-                  //  
-                  //  var decodedLevels = decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                  //  setRegion = new google.maps.Polyline({
-                  //      locations: decodedPath,
-                   //     levels: decodedLevels,
-                   //     strokeColor: "#FF0000",
-                   //     strokeOpacity: 1.0,
-                 //       strokeWeight: 2,
-                   //     map: window.map
-                //   });
                     
                     var decodedPath = google.maps.geometry.encoding.decodePath(e);
                     
@@ -173,9 +161,9 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
                   });
                     
                         route.setMap(window.map);
+                    $('#crime-report').fadeIn(250);
+                    $('#route-dir').fadeIn(250);
                 });
-                //codeAddress(document.getElementById("S").value, window.map);
-                 //codeAddress(document.getElementById("F").value, window.map);
              });
             
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -217,22 +205,49 @@ if(isset($_POST["S"]) && isset($_POST["F"])) {
             
             <div id="map" style="height:70%"></div>
             
-            <div class="crime-report" id="crime-report">
+            <div class="crime-report" id="crime-report" style="display:none;">
+                <h2>Crime Report</h2>
                 <div class="grid">
-                    <div class="row cells5">
-                        <div class="cell col"></div>
-                        ...
-                        <div class="cell"></div>
+                    <div class="row cells8">
+                        <div class="cell colspan6">
+                            <p><h5>Theft: 38</h5></p>
+                            <p><h5>Theft: 38</h5></p>
+                            <p><h5>Theft: 38</h5></p>
+                        </div>
+                        <div class="cell colspan2" style="text-align:center;"><h2>38</h2><br/><h4>Total Crimes</h4></div>
                     </div>
                 </div>
             </div>
             
+            <div class="route-dir" id="route-dir" style="display:none;">
+                <h2>Directions</h2>
+                <div>Dom's stuff goes here</div>
+            </div>
             
-        <div class="leader align-center">About</div>
+        <br/></br>
+        <h1>About</h1>
         <div>
-            <p>Homeward Bound is a webapp which allows you 
+            <p>Homeward Bound is a webapp which will decide the safest route for you to get home. By using weighted crimes from the Police's online database we check all possible routes and search around the route for the most crime, easily letting you know the safest path. After we compute the data we show it back to you so you can make a decision on how you travel.</p>
+            <p>This app was created in 24 hours by Team Wiggle Wiggle at HackManchester 2015. Wiggle Wiggle were a team of 4 2nd year Computer Science undergraduates from Salford University.</p>
         </div>
-        
+        </br>
+        <h1>Help</h1>
+        <div>
+            <p>Homeward Bound is very simple to use, simply put in a start point and then put in your destination, if you're not sure where ou areyou can use the satellitte button and we will find you.</p>
+            <p>If you require help during your travel please contact the police at 999 for emergencies or 101 for none-emergencies.</p>
+        </div>
+        </br>
+        <h1>Contact</h1>
+        <div>
+            <p>Homeward Bound was created by:
+                <ul>
+                    <li>Frontend design and Javascript - Katie Paxton-Fear</li>
+                    <li>Backend, crime and map data - Lewis Campbell</li>
+                    <li>Backend, algorithm for finding crimes - Dominic Wright</li>
+                    <li>Backend, algorithm for weighting crimes - Tom Willington</li>
+                </ul>
+            </p>
+        </div>
         
         </div>
     </body>
