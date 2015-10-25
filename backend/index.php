@@ -5,7 +5,7 @@
     function returnMaps($origin, $dest) {
 		$origin = str_replace(" ","+",$origin);
 		$dest = str_replace(" ","+",$dest);
-        $routes = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?origin=".$origin."&destination=".$dest."&key=AIzaSyDPIf8XDKguqBgJo5VzM8eurWmMmOvWxB0&alternatives=true");
+        $routes = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?origin=".$origin."&destination=".$dest."&key=AIzaSyDPIf8XDKguqBgJo5VzM8eurWmMmOvWxB0&alternatives=true&mode=walking");
 		$json=json_decode($routes, true);
 		$steps = array();
 		$directions = array();
