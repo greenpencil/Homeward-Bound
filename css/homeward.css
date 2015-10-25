@@ -1,0 +1,26 @@
+.main {
+    width:80%;
+    margin:0 auto;
+    background-color: #fff;
+    position: relative;
+}
+
+.makesmaller {
+    width: 80%;
+     margin:0 auto;
+}
+
+body {
+    background-color: #eee;
+}
+
+.call-to-action {
+    margin-top: 10px;
+    z-index: 10;
+    width: 60%;
+    padding: 15px;
+    background-color: #fff;
+    text-align: center;
+    margin-left: 17%;
+    position: absolute;
+}
